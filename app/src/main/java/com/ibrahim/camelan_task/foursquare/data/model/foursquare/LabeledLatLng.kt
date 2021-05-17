@@ -1,0 +1,7 @@
+package com.ibrahim.camelan_task.foursquare.data.model.foursquare
+
+data class LabeledLatLng(
+    val label: String,
+    val lat: Double,
+    val lng: Double
+)
