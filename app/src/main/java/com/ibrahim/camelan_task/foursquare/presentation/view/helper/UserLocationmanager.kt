@@ -22,10 +22,6 @@ class UserLocationManager(
         val onPermissionDenied: () -> Unit,
 ) {
 
-    val lm by lazy {
-        activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-    }
-
     private val fusedLocationClient: FusedLocationProviderClient by lazy {
         LocationServices.getFusedLocationProviderClient(activity)
     }
@@ -89,24 +85,6 @@ class UserLocationManager(
             Looper.getMainLooper()
         )
 
-
-        val locationListenerGps: LocationListener =
-            object : LocationListener {
-                override fun onLocationChanged(location: Location) {
-                    onLocationGranted(location)
-                }
-
-                override fun onProviderDisabled(provider: String) {}
-                override fun onProviderEnabled(provider: String) {}
-                override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {
-                }
-            }
-
-        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 500f, locationListenerGps)
-
-        val gps_loc = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-
-        Log.d("TAG", "getLasKnownLocation: ${gps_loc?.latitude}")
 
     }
 

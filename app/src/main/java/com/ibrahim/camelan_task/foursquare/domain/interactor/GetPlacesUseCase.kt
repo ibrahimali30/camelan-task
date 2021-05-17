@@ -8,11 +8,11 @@ import javax.inject.Inject
 
 class GetPlacesUseCase @Inject constructor(private val forecastRepository: PlacesRepository) {
 
-    fun fetchPlaces(params: PlacesParams): Single<PlacesUiModel> {
+    fun fetchPlaces(params: PlacesParams): Single<List<PlacesUiModel>> {
         return forecastRepository.fetchPlaces(params)
     }
 
-    fun getPlacesFromLocalDB(cityName: String): Single<PlacesUiModel> {
+    fun getPlacesFromLocalDB(cityName: String): Single<List<PlacesUiModel>> {
         return forecastRepository.getPlacesFromLocalDB(cityName)
     }
 

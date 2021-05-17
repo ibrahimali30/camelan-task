@@ -4,8 +4,13 @@ import androidx.room.*
 
 @Entity
 data class PlacesUiModel (
+    var name: String = "",
+    var country: String = "",
+    var state: String = "",
+    var city: String = "",
+    var neighborhood: String = "",
+
     @PrimaryKey
     var id: Int = 0,
-
     )
 

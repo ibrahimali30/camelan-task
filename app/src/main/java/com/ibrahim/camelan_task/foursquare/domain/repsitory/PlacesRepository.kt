@@ -6,8 +6,8 @@ import io.reactivex.Single
 
 interface PlacesRepository {
 
-    fun fetchPlaces(params: PlacesParams): Single<PlacesUiModel>
-    fun getPlacesFromLocalDB(cityName: String): Single<PlacesUiModel>
-    fun insertPlacesIntoLocalDB(forecastUiModel: PlacesUiModel)
+    fun fetchPlaces(params: PlacesParams): Single<List<PlacesUiModel>>
+    fun getPlacesFromLocalDB(cityName: String): Single<List<PlacesUiModel>>
+    fun insertPlacesIntoLocalDB(forecastUiModel: List<PlacesUiModel>)
 
 }

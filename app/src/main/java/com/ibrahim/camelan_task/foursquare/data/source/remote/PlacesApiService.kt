@@ -12,7 +12,7 @@ interface PlacesApiService {
 
     @GET("explore")
     fun getPlaces(
-        @Query("ll") lon : String = "40.74224,-73.99386",
+        @Query("ll") location : String = "40.74224,-73.99386",
         @Query("v") version : String = API_VERSION,
         @Query("radius") radius : String = "1000",
         @Query("client_id") client_id : String = CLIENT_ID,

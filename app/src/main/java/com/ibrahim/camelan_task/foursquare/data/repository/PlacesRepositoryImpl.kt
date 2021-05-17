@@ -16,21 +16,21 @@ class PlacesRepositoryImpl @Inject constructor(
     private val forecastLocalDataSource: PlacesLocalDataSource
 ) : PlacesRepository {
 
-    override fun fetchPlaces(params: PlacesParams): Single<PlacesUiModel> {
+    override fun fetchPlaces(params: PlacesParams): Single<List<PlacesUiModel>> {
         return forecastRemoteDataSource.fetchPlaces(params)
                 .map { cityWeatherResponse ->
                     cityWeatherResponse.mapToUiModel().also {
                         insertPlacesIntoLocalDB(it)
                     }
                     //on error get from db
-                }.onErrorResumeNext(getPlacesFromLocalDB(params.cityName?: ""))
+                }.onErrorResumeNext(getPlacesFromLocalDB(""))
     }
 
-    override fun getPlacesFromLocalDB(cityName: String): Single<PlacesUiModel> {
+    override fun getPlacesFromLocalDB(cityName: String): Single<List<PlacesUiModel>> {
         return forecastLocalDataSource.getPlacesByCityName(cityName)
     }
 
-    override fun insertPlacesIntoLocalDB(forecastUiModel: PlacesUiModel) {
+    override fun insertPlacesIntoLocalDB(forecastUiModel: List<PlacesUiModel>) {
         forecastLocalDataSource.insertPlacesUiModel(forecastUiModel)
     }
 

@@ -9,13 +9,13 @@ class PlacesLocalDataSource @Inject constructor(
     private val forecastDao: PlacesDao
 ) {
 
-    fun getPlacesByCityName(cityName: String): Single<PlacesUiModel> {
+    fun getPlacesByCityName(cityName: String): Single<List<PlacesUiModel>> {
         return Single.fromCallable {
             forecastDao.getPlacesByCityName()
         }
     }
 
-    fun insertPlacesUiModel(forecastUiModel: PlacesUiModel) {
+    fun insertPlacesUiModel(forecastUiModel: List<PlacesUiModel>) {
          forecastDao.insertPlacesUiModel(forecastUiModel)
     }
 

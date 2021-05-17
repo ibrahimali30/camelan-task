@@ -13,8 +13,11 @@ interface PlacesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertPlacesUiModel(PlacesUiModel: PlacesUiModel):Long
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertPlacesUiModel(PlacesUiModel: List<PlacesUiModel>)
+
     @Query("select * from PlacesUiModel limit 1")
-    fun getPlacesByCityName(): PlacesUiModel
+    fun getPlacesByCityName(): List<PlacesUiModel>
 
 
 }

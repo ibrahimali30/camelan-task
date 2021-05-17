@@ -11,7 +11,7 @@ class PlacesRemoteDataSource @Inject constructor(
 
      fun fetchPlaces(params: PlacesParams): Single<FourSquareResponse> {
        return forecastApiService.getPlaces(
-
+           location = params.getFormatedLocation()
        )
      }
 

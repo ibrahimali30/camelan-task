@@ -28,23 +28,23 @@ class PlacesViewModel @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                handleSuccess(it, params)
+                handleSuccess(it)
             }, {
                 screenState.value =PlacesScreenState.ErrorLoadingFromApi(it)
             }).addTo(compositeDisposable)
     }
 
-    private fun handleSuccess(it: PlacesUiModel, params: PlacesParams) {
+    private fun handleSuccess(it: List<PlacesUiModel>) {
 
-        screenState.value = PlacesScreenState.SuccessAPIResponse(ArrayList())
+        screenState.value = PlacesScreenState.SuccessAPIResponse(it)
     }
 
     sealed class PlacesScreenState {
         object Loading : PlacesScreenState()
         class ErrorLoadingFromApi(val error: Throwable) : PlacesScreenState()
-        class SuccessAPIResponse(val data: ArrayList<Any>) : PlacesScreenState(){
+        class SuccessAPIResponse(val data: List<PlacesUiModel>) : PlacesScreenState()
 
-        }
+
     }
 
 

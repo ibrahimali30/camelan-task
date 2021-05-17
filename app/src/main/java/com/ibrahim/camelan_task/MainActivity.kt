@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun onLocationGranted(location: Location) {
         Log.d("TAG", "onLocationGranted: ")
+        forecastViewModel.getPlaces(PlacesParams(location.latitude, location.longitude))
     }
 
 }
