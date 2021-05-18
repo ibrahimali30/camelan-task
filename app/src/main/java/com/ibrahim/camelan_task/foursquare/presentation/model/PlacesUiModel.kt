@@ -1,6 +1,9 @@
 package com.ibrahim.camelan_task.foursquare.presentation.model
 
 import androidx.room.*
+import com.ibrahim.camelan_task.foursquare.data.model.photo.PlacePhotos
+import io.reactivex.Observable
+import io.reactivex.Single
 
 @Entity
 data class PlacesUiModel (
@@ -9,8 +12,18 @@ data class PlacesUiModel (
     var state: String = "",
     var city: String = "",
     var neighborhood: String = "",
+    var prefix: String = "",
+    var suffix: String = "",
 
     @PrimaryKey
-    var id: Int = 0,
-    )
+    var id: String,
+    ){
+
+    @Ignore
+    lateinit var observable: Single<PlacePhotos>
+
+
+
+
+}
 

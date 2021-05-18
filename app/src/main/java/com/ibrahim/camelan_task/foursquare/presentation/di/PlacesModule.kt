@@ -1,6 +1,6 @@
 package com.ibrahim.camelan_task.foursquare.presentation.di
 
-import com.ibrahim.camelan_task.db.WeatherDatabase
+import com.ibrahim.camelan_task.db.AppDatabase
 import dagger.Module
 import dagger.Provides
 import com.ibrahim.camelan_task.foursquare.data.repository.PlacesRepositoryImpl
@@ -17,7 +17,7 @@ class PlacesModule {
 
 
     @Provides
-    fun providesPlacesRepository(forecastRepositoryImpl: PlacesRepositoryImpl): PlacesRepository = forecastRepositoryImpl
+    fun providesPlacesRepository(placesRepositoryImpl: PlacesRepositoryImpl): PlacesRepository = placesRepositoryImpl
 
     @Provides
     fun providesPlacesApiService(builder: Retrofit.Builder): PlacesApiService {
@@ -26,7 +26,7 @@ class PlacesModule {
 
 
     @Provides
-    fun providesPlacesDao(WeatherDatabase: WeatherDatabase): PlacesDao = WeatherDatabase.forecastDao()
+    fun providesPlacesDao(WeatherDatabase: AppDatabase): PlacesDao = WeatherDatabase.placesDao()
 
 
 }

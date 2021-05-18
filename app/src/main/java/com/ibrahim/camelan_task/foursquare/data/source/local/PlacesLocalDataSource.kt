@@ -6,17 +6,17 @@ import javax.inject.Inject
 
 
 class PlacesLocalDataSource @Inject constructor(
-    private val forecastDao: PlacesDao
+    private val placesDao: PlacesDao
 ) {
 
-    fun getPlacesByCityName(cityName: String): Single<List<PlacesUiModel>> {
+    fun getPlacesByCityName(): Single<List<PlacesUiModel>> {
         return Single.fromCallable {
-            forecastDao.getPlacesByCityName()
+            placesDao.getPlacesByCityName()
         }
     }
 
-    fun insertPlacesUiModel(forecastUiModel: List<PlacesUiModel>) {
-         forecastDao.insertPlacesUiModel(forecastUiModel)
+    fun insertPlacesUiModel(placesUiModel: List<PlacesUiModel>) {
+         placesDao.insertPlacesUiModel(placesUiModel)
     }
 
 }

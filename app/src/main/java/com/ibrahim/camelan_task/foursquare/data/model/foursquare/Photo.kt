@@ -1,6 +1,6 @@
 package com.ibrahim.camelan_task.foursquare.data.model.foursquare
 
-data class Reasons(
-    val count: Int,
-    val items: List<ItemX>
+data class Photo(
+    val prefix: String,
+    val suffix: String,
 )

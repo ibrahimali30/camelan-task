@@ -16,7 +16,7 @@ interface PlacesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertPlacesUiModel(PlacesUiModel: List<PlacesUiModel>)
 
-    @Query("select * from PlacesUiModel limit 1")
+    @Query("select * from PlacesUiModel")
     fun getPlacesByCityName(): List<PlacesUiModel>
 
 

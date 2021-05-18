@@ -1,5 +1,6 @@
 package com.ibrahim.camelan_task.foursquare.data.repository
 
+import com.ibrahim.camelan_task.foursquare.data.model.photo.PlacePhotos
 import io.reactivex.Single
 import com.ibrahim.camelan_task.foursquare.data.source.remote.PlacesRemoteDataSource
 import com.ibrahim.camelan_task.foursquare.domain.repsitory.PlacesRepository
@@ -12,26 +13,30 @@ import javax.inject.Inject
 
 
 class PlacesRepositoryImpl @Inject constructor(
-    private val forecastRemoteDataSource: PlacesRemoteDataSource,
-    private val forecastLocalDataSource: PlacesLocalDataSource
+    private val placesRemoteDataSource: PlacesRemoteDataSource,
+    private val placesLocalDataSource: PlacesLocalDataSource
 ) : PlacesRepository {
 
     override fun fetchPlaces(params: PlacesParams): Single<List<PlacesUiModel>> {
-        return forecastRemoteDataSource.fetchPlaces(params)
+        return placesRemoteDataSource.fetchPlaces(params)
                 .map { cityWeatherResponse ->
                     cityWeatherResponse.mapToUiModel().also {
                         insertPlacesIntoLocalDB(it)
                     }
                     //on error get from db
-                }.onErrorResumeNext(getPlacesFromLocalDB(""))
+                }.onErrorResumeNext(getPlacesFromLocalDB())
     }
 
-    override fun getPlacesFromLocalDB(cityName: String): Single<List<PlacesUiModel>> {
-        return forecastLocalDataSource.getPlacesByCityName(cityName)
+    override fun getPlacesFromLocalDB(): Single<List<PlacesUiModel>> {
+        return placesLocalDataSource.getPlacesByCityName()
     }
 
-    override fun insertPlacesIntoLocalDB(forecastUiModel: List<PlacesUiModel>) {
-        forecastLocalDataSource.insertPlacesUiModel(forecastUiModel)
+    override fun insertPlacesIntoLocalDB(placesUiModel: List<PlacesUiModel>) {
+        placesLocalDataSource.insertPlacesUiModel(placesUiModel)
+    }
+
+    override fun getPlacePhotos(venueId: String): Single<PlacePhotos> {
+        return placesRemoteDataSource.getPlacePhotos(venueId)
     }
 
 

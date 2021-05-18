@@ -28,15 +28,9 @@ class UserLocationManager(
 
     val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult?) {
-            locationResult ?: return
-            for (location in locationResult.locations) {
-                Log.d("TAG", "onLocationResult: fused")
+            locationResult?.lastLocation?.let {
+                onLocationGranted(it)
             }
-        }
-
-        override fun onLocationAvailability(p0: LocationAvailability?) {
-            super.onLocationAvailability(p0)
-            Log.d("TAG", "onLocationAvailability: ")
         }
     }
 

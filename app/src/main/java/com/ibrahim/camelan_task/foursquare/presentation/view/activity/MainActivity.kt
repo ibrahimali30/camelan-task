@@ -20,7 +20,7 @@ const val TAG = "TAGggg"
 class MainActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var forecastViewModel : PlacesViewModel
+    lateinit var placesViewModel : PlacesViewModel
 
 
 

@@ -8,12 +8,12 @@ import com.ibrahim.camelan_task.foursquare.presentation.model.PlacesUiModel
     entities = [
         PlacesUiModel::class
     ],
-    version = 1 , exportSchema = false
+    version = 4 , exportSchema = false
 )
 
-abstract class WeatherDatabase : RoomDatabase() {
+abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun forecastDao(): PlacesDao
+    abstract fun placesDao(): PlacesDao
 
 }
 
