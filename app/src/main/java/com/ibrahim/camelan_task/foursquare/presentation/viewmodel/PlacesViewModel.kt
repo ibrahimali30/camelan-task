@@ -2,6 +2,7 @@ package com.ibrahim.camelan_task.foursquare.presentation.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.ibrahim.camelan_task.base.AppPreferences
 import com.ibrahim.camelan_task.foursquare.domain.entity.PlacesParams
 import com.ibrahim.camelan_task.foursquare.domain.interactor.GetPlacePhotosUseCase
 import com.ibrahim.camelan_task.foursquare.domain.interactor.GetPlacesUseCase
@@ -15,12 +16,21 @@ import javax.inject.Inject
 
 class PlacesViewModel @Inject constructor(
         private val placesUseCase: GetPlacesUseCase,
-        private val getPlacePhotos: GetPlacePhotosUseCase
+        private val getPlacePhotos: GetPlacePhotosUseCase,
+        private val appPreferences: AppPreferences
 ): ViewModel() {
+
+    lateinit var locationUpdateMode: AppPreferences.LocationUpdateMode
+
+    fun init() {
+        locationUpdateMode = appPreferences.getLocationUpdateMode()
+        locationUpdateModeLiveData.value = locationUpdateMode
+    }
 
     private val compositeDisposable = CompositeDisposable()
 
     val screenState by lazy { MutableLiveData<PlacesScreenState>() }
+    val locationUpdateModeLiveData by lazy {MutableLiveData<AppPreferences.LocationUpdateMode>() }
 
     fun getPlaces(params: PlacesParams) {
         screenState.value = PlacesScreenState.Loading

@@ -27,9 +27,6 @@ class MainActivity : AppCompatActivity() {
 
     private val locationManager = UserLocationManager(this, ::onLocationGranted, ::onPermissionDenied)
 
-@Inject
-lateinit var appPreferences: AppPreferences
-
     lateinit var adapter: PlacesAdapter
 
 
@@ -37,15 +34,17 @@ lateinit var appPreferences: AppPreferences
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        locationManager.askForPermission()
-
         observeScreenState()
         initRecyclerView()
 
-        appPreferences.getLocationUpdateMode()
+        placesViewModel.init()
+        initObservers()
+    }
 
-        appPreferences.setLocationUpdateMode(AppPreferences.LocationUpdateMode.SINGLE)
-
+    private fun initObservers() {
+        placesViewModel.locationUpdateModeLiveData.observe(this, Observer {
+            locationManager.setAppLocationUpdateMode(it)
+        })
     }
 
     private fun onPermissionDenied() {

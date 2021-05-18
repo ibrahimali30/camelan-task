@@ -14,6 +14,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.*
+import com.ibrahim.camelan_task.base.AppPreferences
 
 
 class UserLocationManager(
@@ -58,20 +59,14 @@ class UserLocationManager(
 
     @SuppressLint("MissingPermission")
     private fun getLasKnownLocation() {
-        fusedLocationClient.lastLocation
-                .addOnSuccessListener(activity) { location ->
-                    if (location != null) {
-                        onLocationGranted(location)
-                    }else{
-                        Log.d("TAG", "getLasKnownLocation: null")
-                    }
-                }
-
 
         val locationRequest = LocationRequest.create()
             .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
             .setInterval(0)
             .setSmallestDisplacement(500f)
+
+        if (locationUpdateMode == AppPreferences.LocationUpdateMode.SINGLE)
+            locationRequest.numUpdates = 1
 
         fusedLocationClient.requestLocationUpdates(
             locationRequest,
@@ -80,6 +75,14 @@ class UserLocationManager(
         )
 
 
+    }
+
+    lateinit var locationUpdateMode: AppPreferences.LocationUpdateMode
+
+    fun setAppLocationUpdateMode(mode: AppPreferences.LocationUpdateMode) {
+        fusedLocationClient.removeLocationUpdates(locationCallback)
+        this.locationUpdateMode = mode
+        askForPermission()
     }
 
 }
