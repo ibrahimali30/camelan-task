@@ -1,18 +1,15 @@
 package com.ibrahim.camelan_task.foursquare.presentation.viewmodel
 
-import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ibrahim.camelan_task.foursquare.domain.entity.PlacesParams
 import com.ibrahim.camelan_task.foursquare.domain.interactor.GetPlacePhotosUseCase
 import com.ibrahim.camelan_task.foursquare.domain.interactor.GetPlacesUseCase
 import com.ibrahim.camelan_task.foursquare.presentation.model.PlacesUiModel
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
@@ -33,8 +30,14 @@ class PlacesViewModel @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .map {list->
                 list.forEach {place ->
-                    place.observable =
-                        getPlacePhotos.getPlacePhotos(place.id)
+                    getPlacePhotos.getPlacePhotos(place.id)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({
+                            if (it.response.photos.items.isEmpty()) return@subscribe
+                            val placePhotoUrl = it.response.photos.items[0].getPhotoUrl()
+                            place.subject.onNext(placePhotoUrl)
+                        },{})
                 }
                 list
             }

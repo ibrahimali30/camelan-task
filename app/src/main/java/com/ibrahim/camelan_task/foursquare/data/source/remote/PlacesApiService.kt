@@ -19,7 +19,8 @@ interface PlacesApiService {
         @Query("v") version : String = API_VERSION,
         @Query("radius") radius : String = "10000",
         @Query("client_id") client_id : String = CLIENT_ID,
-        @Query("oauth_token") oauth_token : String = "J02LPKR3COBDHKYVCROBJYX4XJLTLPWQJPXLUHOCZE3NHWYQ",
+//        @Query("limit") limit : Int = 1,
+//        @Query("oauth_token") oauth_token : String = "J02LPKR3COBDHKYVCROBJYX4XJLTLPWQJPXLUHOCZE3NHWYQ",
         @Query("client_secret") client_secret : String = CLIENT_SECRET
     ): Single<FourSquareResponse>
 
@@ -29,7 +30,7 @@ interface PlacesApiService {
         @Path("VENUE_ID") venueId: String,
         @Query("v") version : String = API_VERSION,
         @Query("client_id") client_id : String = CLIENT_ID,
-        @Query("oauth_token") oauth_token : String = "J02LPKR3COBDHKYVCROBJYX4XJLTLPWQJPXLUHOCZE3NHWYQ",
+//        @Query("oauth_token") oauth_token : String = "J02LPKR3COBDHKYVCROBJYX4XJLTLPWQJPXLUHOCZE3NHWYQ",
         @Query("client_secret") client_secret : String = CLIENT_SECRET
     ): Single<PlacePhotos>
 

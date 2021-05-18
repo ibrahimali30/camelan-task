@@ -4,9 +4,11 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ibrahim.camelan_task.R
+import com.ibrahim.camelan_task.foursquare.data.model.photo.PlacePhotos
 import com.ibrahim.camelan_task.foursquare.presentation.model.PlacesUiModel
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -48,19 +50,25 @@ class PlacesAdapter(val data: ArrayList<PlacesUiModel> = java.util.ArrayList()) 
         @SuppressLint("CheckResult")
         fun bind(model: PlacesUiModel) {
 
-            model.observable
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe ({
-                    if (it.response.photos.items.isEmpty()) return@subscribe
-                    val photo = it.response.photos.items[0].getPhotoUrl()
-                    Glide.with(itemView)
-                        .load(photo)
-                        .into(itemView.ivPlace)
-                }, {
+            if (model.subject.hasValue()){
+                loadImage(model.subject.value!!, itemView.ivPlace)
+            }else{
+                model.subject
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe ({
+                        loadImage(it, itemView.ivPlace)
+                    }, {
 
-                }
-)
+                    })
+            }
+
+        }
+
+        private fun loadImage(placePhotoUrl: String, ivPlace: ImageView) {
+            Glide.with(itemView)
+                .load(placePhotoUrl)
+                .into(ivPlace)
         }
 
 

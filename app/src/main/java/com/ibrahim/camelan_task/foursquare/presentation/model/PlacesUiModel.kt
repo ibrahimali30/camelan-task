@@ -1,9 +1,10 @@
 package com.ibrahim.camelan_task.foursquare.presentation.model
 
+import android.annotation.SuppressLint
 import androidx.room.*
 import com.ibrahim.camelan_task.foursquare.data.model.photo.PlacePhotos
-import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.subjects.BehaviorSubject
 
 @Entity
 data class PlacesUiModel (
@@ -20,7 +21,7 @@ data class PlacesUiModel (
     ){
 
     @Ignore
-    lateinit var observable: Single<PlacePhotos>
+    var subject: BehaviorSubject<String> = BehaviorSubject.create<String>()
 
 
 
