@@ -16,21 +16,13 @@ import javax.inject.Inject
 
 class PlacesViewModel @Inject constructor(
         private val placesUseCase: GetPlacesUseCase,
-        private val getPlacePhotos: GetPlacePhotosUseCase,
-        private val appPreferences: AppPreferences
+        private val getPlacePhotos: GetPlacePhotosUseCase
 ): ViewModel() {
 
-    lateinit var locationUpdateMode: AppPreferences.LocationUpdateMode
-
-    fun init() {
-        locationUpdateMode = appPreferences.getLocationUpdateMode()
-        locationUpdateModeLiveData.value = locationUpdateMode
-    }
 
     private val compositeDisposable = CompositeDisposable()
 
     val screenState by lazy { MutableLiveData<PlacesScreenState>() }
-    val locationUpdateModeLiveData by lazy {MutableLiveData<AppPreferences.LocationUpdateMode>() }
 
     fun getPlaces(params: PlacesParams) {
         screenState.value = PlacesScreenState.Loading

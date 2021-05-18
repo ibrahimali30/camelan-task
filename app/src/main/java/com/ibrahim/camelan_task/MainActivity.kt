@@ -29,7 +29,8 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var adapter: PlacesAdapter
 
-
+    @Inject
+    lateinit var appPreferences: AppPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -37,13 +38,26 @@ class MainActivity : AppCompatActivity() {
         observeScreenState()
         initRecyclerView()
 
-        placesViewModel.init()
+        locationManager.init(appPreferences)
         initObservers()
+        initViews()
+    }
+
+    private fun initViews() {
+        tvUpdateMode.setOnClickListener {
+            locationManager.switchLocationUpdateMode()
+        }
     }
 
     private fun initObservers() {
-        placesViewModel.locationUpdateModeLiveData.observe(this, Observer {
-            locationManager.setAppLocationUpdateMode(it)
+        locationManager.locationUpdateModeLiveData.observe(this, Observer {
+            tvUpdateMode.text =
+                    if (it == AppPreferences.LocationUpdateMode.SINGLE)
+                        "Single"
+                    else
+                        "RealTime"
+
+
         })
     }
 

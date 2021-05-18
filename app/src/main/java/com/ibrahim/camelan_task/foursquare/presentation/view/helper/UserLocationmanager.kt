@@ -2,17 +2,13 @@ package com.ibrahim.camelan_task.foursquare.presentation.view.helper
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
-import android.os.Bundle
 import android.os.Looper
-import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.location.*
 import com.ibrahim.camelan_task.base.AppPreferences
 
@@ -22,6 +18,8 @@ class UserLocationManager(
         val onLocationGranted: (location: Location) -> Unit,
         val onPermissionDenied: () -> Unit,
 ) {
+
+    lateinit var appPreferences: AppPreferences
 
     private val fusedLocationClient: FusedLocationProviderClient by lazy {
         LocationServices.getFusedLocationProviderClient(activity)
@@ -46,6 +44,16 @@ class UserLocationManager(
             }
         }
 
+    fun init(appPreferences: AppPreferences) {
+        this.appPreferences = appPreferences
+        val mode = this.appPreferences.getLocationUpdateMode()
+        setAppLocationUpdateMode(mode)
+    }
+
+     var locationUpdateModeLiveData = MutableLiveData<AppPreferences.LocationUpdateMode>()
+
+
+
 
     fun askForPermission() {
         val permissionStatus = ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -65,7 +73,7 @@ class UserLocationManager(
             .setInterval(0)
             .setSmallestDisplacement(500f)
 
-        if (locationUpdateMode == AppPreferences.LocationUpdateMode.SINGLE)
+        if (locationUpdateModeLiveData.value == AppPreferences.LocationUpdateMode.SINGLE)
             locationRequest.numUpdates = 1
 
         fusedLocationClient.requestLocationUpdates(
@@ -77,12 +85,21 @@ class UserLocationManager(
 
     }
 
-    lateinit var locationUpdateMode: AppPreferences.LocationUpdateMode
 
     fun setAppLocationUpdateMode(mode: AppPreferences.LocationUpdateMode) {
         fusedLocationClient.removeLocationUpdates(locationCallback)
-        this.locationUpdateMode = mode
+        locationUpdateModeLiveData.value = mode
         askForPermission()
+    }
+
+    fun switchLocationUpdateMode() {
+        val newMode = if (locationUpdateModeLiveData.value == AppPreferences.LocationUpdateMode.SINGLE)
+            AppPreferences.LocationUpdateMode.REAL_TIME
+        else
+            AppPreferences.LocationUpdateMode.SINGLE
+
+        appPreferences.setLocationUpdateMode(newMode)
+        setAppLocationUpdateMode(newMode)
     }
 
 }
