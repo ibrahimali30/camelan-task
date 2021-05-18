@@ -1,6 +1,7 @@
 package com.ibrahim.camelan_task.db
 
-import androidx.room.*
+import androidx.room.Database
+import androidx.room.RoomDatabase
 import com.ibrahim.camelan_task.foursquare.data.source.local.PlacesDao
 import com.ibrahim.camelan_task.foursquare.presentation.model.PlacesUiModel
 

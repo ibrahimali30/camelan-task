@@ -1,15 +1,14 @@
 package com.ibrahim.camelan_task.foursquare.data.repository
 
 import com.ibrahim.camelan_task.foursquare.data.model.photo.PlacePhotos
-import io.reactivex.Single
+import com.ibrahim.camelan_task.foursquare.data.source.local.PlacesLocalDataSource
 import com.ibrahim.camelan_task.foursquare.data.source.remote.PlacesRemoteDataSource
+import com.ibrahim.camelan_task.foursquare.domain.entity.PlacesParams
 import com.ibrahim.camelan_task.foursquare.domain.repsitory.PlacesRepository
 import com.ibrahim.camelan_task.foursquare.presentation.model.PlacesUiModel
 import com.ibrahim.camelan_task.foursquare.presentation.model.mapToUiModel
-import com.ibrahim.camelan_task.foursquare.data.source.local.PlacesLocalDataSource
-import com.ibrahim.camelan_task.foursquare.domain.entity.PlacesParams
+import io.reactivex.Single
 import javax.inject.Inject
-
 
 
 class PlacesRepositoryImpl @Inject constructor(
@@ -23,8 +22,7 @@ class PlacesRepositoryImpl @Inject constructor(
                     cityWeatherResponse.mapToUiModel().also {
                         insertPlacesIntoLocalDB(it)
                     }
-                    //on error get from db
-                }.onErrorResumeNext(getPlacesFromLocalDB())
+                }
     }
 
     override fun getPlacesFromLocalDB(): Single<List<PlacesUiModel>> {

@@ -1,9 +1,8 @@
 package com.ibrahim.camelan_task.foursquare.presentation.model
 
-import android.annotation.SuppressLint
-import androidx.room.*
-import com.ibrahim.camelan_task.foursquare.data.model.photo.PlacePhotos
-import io.reactivex.Single
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
 import io.reactivex.subjects.BehaviorSubject
 
 @Entity

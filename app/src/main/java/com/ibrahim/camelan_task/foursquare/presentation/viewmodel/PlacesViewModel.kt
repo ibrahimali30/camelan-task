@@ -2,7 +2,6 @@ package com.ibrahim.camelan_task.foursquare.presentation.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.ibrahim.camelan_task.base.AppPreferences
 import com.ibrahim.camelan_task.foursquare.domain.entity.PlacesParams
 import com.ibrahim.camelan_task.foursquare.domain.interactor.GetPlacePhotosUseCase
 import com.ibrahim.camelan_task.foursquare.domain.interactor.GetPlacesUseCase
@@ -57,10 +56,14 @@ class PlacesViewModel @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                handleSuccess(it)
+                handleLocalData(it)
             }, {
                 handleErrorLoadingFromLocal(it)
             }).addTo(compositeDisposable)
+    }
+
+    private fun handleLocalData(it: List<PlacesUiModel>) {
+        screenState.value =PlacesScreenState.SuccessLocalResponse(it)
     }
 
     private fun handleErrorLoadingFromLocal(it: Throwable) {
@@ -81,6 +84,7 @@ class PlacesViewModel @Inject constructor(
         class ErrorLoadingFromApi(val error: Throwable) : PlacesScreenState()
         class ErrorLoadingFromLocal(val error: Throwable) : PlacesScreenState()
         class SuccessAPIResponse(val data: List<PlacesUiModel>) : PlacesScreenState()
+        class SuccessLocalResponse(val data: List<PlacesUiModel>) : PlacesScreenState()
 
     }
 

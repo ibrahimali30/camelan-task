@@ -12,7 +12,6 @@ import com.ibrahim.camelan_task.foursquare.presentation.model.PlacesUiModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.layout_place_item.view.*
-import kotlin.collections.ArrayList
 
 class PlacesAdapter(val data: ArrayList<PlacesUiModel> = java.util.ArrayList()) :
     RecyclerView.Adapter<PlacesAdapter.ViewHolder>() {

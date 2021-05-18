@@ -3,12 +3,13 @@ package com.ibrahim.camelan_task.foursquare.presentation.view.activity
 
 import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.ibrahim.camelan_task.R
 import com.ibrahim.camelan_task.base.AppPreferences
 import com.ibrahim.camelan_task.foursquare.domain.entity.PlacesParams
@@ -87,8 +88,23 @@ class MainActivity : AppCompatActivity() {
         when (state) {
             is PlacesViewModel.PlacesScreenState.SuccessAPIResponse -> handleSuccess(state.data)
             is PlacesViewModel.PlacesScreenState.ErrorLoadingFromLocal -> handleError(state.error)
+            is PlacesViewModel.PlacesScreenState.SuccessLocalResponse ->{
+                showCashedDataAlert()
+                handleSuccess(state.data)
+            }
             else -> {}
         }
+    }
+
+    private fun showCashedDataAlert() {
+        Snackbar.make(parenView, "check your internet connection", Snackbar.LENGTH_INDEFINITE)
+            .setAction("Retry") {
+                locationManager.locationUpdateModeLiveData.value?.let {
+                    locationManager.setAppLocationUpdateMode(it)
+                }
+            }
+            .setActionTextColor(ContextCompat.getColor(this, R.color.white))
+            .show()
     }
 
     private fun handleErrorViewsVisibility(state: PlacesViewModel.PlacesScreenState?) {
@@ -102,13 +118,12 @@ class MainActivity : AppCompatActivity() {
     private fun handleError(error: Throwable) {
         showErrorViews()
         ivErrorIcon.setImageResource(R.drawable.ic_baseline_cloud_off_24)
-        tvDay.text = "Something went wrong!!"
+        tvErrorMsg.text = "Something went wrong!!"
     }
 
     private fun showErrorViews() {
         adapter.clear()
         errorViewLayout.visibility = View.VISIBLE
-
     }
 
     private fun handleSuccess(data: List<PlacesUiModel>) {
@@ -122,12 +137,11 @@ class MainActivity : AppCompatActivity() {
     private fun showEmptyResult() {
         showErrorViews()
         ivErrorIcon.setImageResource(R.drawable.ic_baseline_error_outline_24)
-        tvDay.text = "no data found!!"
+        tvErrorMsg.text = "no data found!!"
     }
 
     private fun handleLoadingVisibility(show: Boolean) {
         progressBar.visibility = if (show && adapter.data.isEmpty()) View.VISIBLE else View.GONE
     }
-
-
+    
 }

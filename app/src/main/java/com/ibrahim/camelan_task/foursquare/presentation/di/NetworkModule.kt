@@ -2,11 +2,9 @@ package com.ibrahim.camelan_task.foursquare.presentation.di
 
 import com.google.gson.GsonBuilder
 import com.ibrahim.camelan_task.base.BASE_URL
-import com.ibrahim.camelan_task.foursquare.data.source.remote.PlacesApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
