@@ -16,7 +16,7 @@ class PlacesLocalDataSource @Inject constructor(
     }
 
     fun insertPlacesUiModel(placesUiModel: List<PlacesUiModel>) {
-         placesDao.insertPlacesUiModel(placesUiModel)
+         placesDao.refreshCategories(placesUiModel)
     }
 
 }

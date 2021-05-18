@@ -6,11 +6,11 @@ import javax.inject.Inject
 
 class AppPreferences @Inject constructor(val sharedPreferences: SharedPreferences) {
     private val KEY_LOCATION_MODE = "mode"
+
     enum class LocationUpdateMode(mode: String){
         REAL_TIME("real time"),
         SINGLE("single")
     }
-
 
     @SuppressLint("ApplySharedPref")
     fun setLocationUpdateMode(locationUpdateMode: LocationUpdateMode){
@@ -23,8 +23,5 @@ class AppPreferences @Inject constructor(val sharedPreferences: SharedPreference
         val mode = sharedPreferences.getString(KEY_LOCATION_MODE, LocationUpdateMode.REAL_TIME.name)
         return LocationUpdateMode.valueOf(mode ?: LocationUpdateMode.REAL_TIME.name)
     }
-
-
-
 
 }

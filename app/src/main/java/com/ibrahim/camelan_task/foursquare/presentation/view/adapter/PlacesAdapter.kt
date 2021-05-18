@@ -8,12 +8,10 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ibrahim.camelan_task.R
-import com.ibrahim.camelan_task.foursquare.data.model.photo.PlacePhotos
 import com.ibrahim.camelan_task.foursquare.presentation.model.PlacesUiModel
-import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.item.view.*
+import kotlinx.android.synthetic.main.layout_place_item.view.*
 import kotlin.collections.ArrayList
 
 class PlacesAdapter(val data: ArrayList<PlacesUiModel> = java.util.ArrayList()) :
@@ -24,11 +22,8 @@ class PlacesAdapter(val data: ArrayList<PlacesUiModel> = java.util.ArrayList()) 
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder {
-        val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.item, parent, false)
-        return ViewHolder(
-            view
-        )
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_place_item, parent, false)
+        return ViewHolder(view)
     }
 
     override fun getItemCount(): Int {
@@ -42,6 +37,11 @@ class PlacesAdapter(val data: ArrayList<PlacesUiModel> = java.util.ArrayList()) 
     fun setList(list: List<PlacesUiModel>) {
         data.clear()
         data.addAll(list)
+        notifyDataSetChanged()
+    }
+
+    fun clear() {
+        data.clear()
         notifyDataSetChanged()
     }
 
@@ -62,6 +62,9 @@ class PlacesAdapter(val data: ArrayList<PlacesUiModel> = java.util.ArrayList()) 
 
                     })
             }
+
+            itemView.tvPlaceName.text = model.name
+            itemView.tvPlaceAddress.text = model.buildFullAdress()
 
         }
 

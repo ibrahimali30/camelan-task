@@ -19,6 +19,9 @@ data class PlacesUiModel (
     @PrimaryKey
     var id: String,
     ){
+    fun buildFullAdress(): String {
+        return "$country $state $city $neighborhood"
+    }
 
     @Ignore
     var subject: BehaviorSubject<String> = BehaviorSubject.create<String>()

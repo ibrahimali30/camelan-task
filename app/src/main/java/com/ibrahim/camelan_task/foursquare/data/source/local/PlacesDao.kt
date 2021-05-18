@@ -1,9 +1,6 @@
 package com.ibrahim.camelan_task.foursquare.data.source.local
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.ibrahim.camelan_task.foursquare.presentation.model.PlacesUiModel
 
 
@@ -19,5 +16,13 @@ interface PlacesDao {
     @Query("select * from PlacesUiModel")
     fun getPlacesByCityName(): List<PlacesUiModel>
 
+    @Query("delete from PlacesUiModel")
+    fun deleteAllPlaces()
+
+    @Transaction
+    fun refreshCategories(categories: List<PlacesUiModel>) {
+        deleteAllPlaces()
+        insertPlacesUiModel(categories)
+    }
 
 }

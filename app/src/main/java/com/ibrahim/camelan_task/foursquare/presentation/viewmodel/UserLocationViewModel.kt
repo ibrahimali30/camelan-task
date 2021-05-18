@@ -17,8 +17,7 @@ import javax.inject.Inject
 
 class UserLocationViewModel @Inject constructor(
         private val appPreferences: AppPreferences
-):ViewModel() {
-
+) : ViewModel() {
 
 
     lateinit var activity: AppCompatActivity
@@ -38,7 +37,6 @@ class UserLocationViewModel @Inject constructor(
         }
     }
 
-
     private val requestPermissionLauncher by lazy {
         activity.registerForActivityResult(ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
@@ -49,7 +47,6 @@ class UserLocationViewModel @Inject constructor(
             }
         }
     }
-
 
     fun init(activity: AppCompatActivity,
              onLocationGranted: (location: Location) -> Unit,
@@ -92,7 +89,6 @@ class UserLocationViewModel @Inject constructor(
 
 
     }
-
 
     fun setAppLocationUpdateMode(mode: AppPreferences.LocationUpdateMode) {
         fusedLocationClient.removeLocationUpdates(locationCallback)
