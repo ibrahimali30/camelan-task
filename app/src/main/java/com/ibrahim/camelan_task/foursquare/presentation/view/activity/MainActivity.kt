@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.ibrahim.camelan_task.R
 import com.ibrahim.camelan_task.foursquare.presentation.view.adapter.PlacesAdapter
-import com.ibrahim.camelan_task.foursquare.presentation.view.helper.UserLocationManager
 import com.ibrahim.camelan_task.foursquare.presentation.viewmodel.PlacesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -22,9 +21,8 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var placesViewModel : PlacesViewModel
 
+// TODO: 5/18/2021 remove
 
-
-    private val locationManager = UserLocationManager(this, ::onLocationGranted, ::onPermissionDenied)
 
     private fun onPermissionDenied() {
         TODO("Not yet implemented")

@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ibrahim.camelan_task.base.AppPreferences
 import com.ibrahim.camelan_task.foursquare.domain.entity.PlacesParams
 import com.ibrahim.camelan_task.foursquare.presentation.view.adapter.PlacesAdapter
-import com.ibrahim.camelan_task.foursquare.presentation.view.helper.UserLocationManager
 import com.ibrahim.camelan_task.foursquare.presentation.viewmodel.PlacesViewModel
+import com.ibrahim.camelan_task.foursquare.presentation.viewmodel.UserLocationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_error_view.*
@@ -25,7 +25,8 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var placesViewModel : PlacesViewModel
 
-    private val locationManager = UserLocationManager(this, ::onLocationGranted, ::onPermissionDenied)
+    @Inject
+    lateinit var locationManager : UserLocationViewModel
 
     lateinit var adapter: PlacesAdapter
 
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         observeScreenState()
         initRecyclerView()
 
-        locationManager.init(appPreferences)
+        locationManager.init(this, ::onLocationGranted, ::onPermissionDenied)
         initObservers()
         initViews()
     }
@@ -116,7 +117,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleLoadingVisibility(show: Boolean) {
-        progressBar.visibility = if (show) View.VISIBLE else View.GONE
+        progressBar.visibility = if (show && adapter.data.isEmpty()) View.VISIBLE else View.GONE
     }
 
 
