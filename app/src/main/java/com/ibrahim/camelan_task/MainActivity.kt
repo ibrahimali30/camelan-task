@@ -7,6 +7,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ibrahim.camelan_task.base.AppPreferences
 import com.ibrahim.camelan_task.foursquare.domain.entity.PlacesParams
 import com.ibrahim.camelan_task.foursquare.presentation.view.adapter.PlacesAdapter
 import com.ibrahim.camelan_task.foursquare.presentation.view.helper.UserLocationManager
@@ -26,7 +27,8 @@ class MainActivity : AppCompatActivity() {
 
     private val locationManager = UserLocationManager(this, ::onLocationGranted, ::onPermissionDenied)
 
-
+@Inject
+lateinit var appPreferences: AppPreferences
 
     lateinit var adapter: PlacesAdapter
 
@@ -39,6 +41,10 @@ class MainActivity : AppCompatActivity() {
 
         observeScreenState()
         initRecyclerView()
+
+        appPreferences.getLocationUpdateMode()
+
+        appPreferences.setLocationUpdateMode(AppPreferences.LocationUpdateMode.SINGLE)
 
     }
 
