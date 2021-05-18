@@ -11,7 +11,7 @@ interface PlacesDao {
     fun insertPlacesUiModel(PlacesUiModel: PlacesUiModel):Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertPlacesUiModel(PlacesUiModel: List<PlacesUiModel>)
+    fun insertPlacesUiModel(places: List<PlacesUiModel>)
 
     @Query("select * from PlacesUiModel")
     fun getPlacesByCityName(): List<PlacesUiModel>
@@ -20,9 +20,9 @@ interface PlacesDao {
     fun deleteAllPlaces()
 
     @Transaction
-    fun refreshCategories(categories: List<PlacesUiModel>) {
+    fun refreshCategories(places: List<PlacesUiModel>) {
         deleteAllPlaces()
-        insertPlacesUiModel(categories)
+        insertPlacesUiModel(places)
     }
 
 }

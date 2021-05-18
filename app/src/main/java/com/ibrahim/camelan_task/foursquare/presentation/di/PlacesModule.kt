@@ -17,16 +17,19 @@ class PlacesModule {
 
 
     @Provides
-    fun providesPlacesRepository(placesRepositoryImpl: PlacesRepositoryImpl): PlacesRepository = placesRepositoryImpl
+    fun providesPlacesRepository(placesRepositoryImpl: PlacesRepositoryImpl): PlacesRepository {
+        return placesRepositoryImpl
+    }
 
     @Provides
     fun providesPlacesApiService(builder: Retrofit.Builder): PlacesApiService {
         return builder.build().create(PlacesApiService::class.java)
     }
 
-
     @Provides
-    fun providesPlacesDao(WeatherDatabase: AppDatabase): PlacesDao = WeatherDatabase.placesDao()
+    fun providesPlacesDao(WeatherDatabase: AppDatabase): PlacesDao {
+        return WeatherDatabase.placesDao()
+    }
 
 
 }

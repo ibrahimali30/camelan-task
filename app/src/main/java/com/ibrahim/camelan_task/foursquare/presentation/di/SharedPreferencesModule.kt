@@ -12,7 +12,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-class ShakespeareansModule {
+class SharedPreferencesModule {
 
     @Provides
     fun getPreferences(context: Application): SharedPreferences {

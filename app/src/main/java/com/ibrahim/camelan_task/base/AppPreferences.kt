@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import javax.inject.Inject
 
-class AppPreferences @Inject constructor(val sharedPreferences: SharedPreferences) {
+class AppPreferences @Inject constructor(private val sharedPreferences: SharedPreferences) {
     private val KEY_LOCATION_MODE = "mode"
 
     enum class LocationUpdateMode(mode: String){

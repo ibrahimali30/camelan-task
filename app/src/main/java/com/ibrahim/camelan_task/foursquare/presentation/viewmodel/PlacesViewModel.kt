@@ -10,6 +10,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
+import java.lang.Exception
 import javax.inject.Inject
 
 
@@ -18,14 +19,11 @@ class PlacesViewModel @Inject constructor(
         private val getPlacePhotos: GetPlacePhotosUseCase
 ): ViewModel() {
 
-
     private val compositeDisposable = CompositeDisposable()
-
     val screenState by lazy { MutableLiveData<PlacesScreenState>() }
 
     fun getPlaces(params: PlacesParams) {
         screenState.value = PlacesScreenState.Loading
-
         placesUseCase.fetchPlaces(params)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -49,7 +47,7 @@ class PlacesViewModel @Inject constructor(
             }).addTo(compositeDisposable)
     }
 
-    fun getCashedPlaces() {
+    private fun getCashedPlaces() {
         screenState.value = PlacesScreenState.Loading
 
         placesUseCase.getPlacesFromLocalDB()
@@ -63,7 +61,11 @@ class PlacesViewModel @Inject constructor(
     }
 
     private fun handleLocalData(it: List<PlacesUiModel>) {
-        screenState.value =PlacesScreenState.SuccessLocalResponse(it)
+        if (it.isNotEmpty()) {
+            screenState.value = PlacesScreenState.SuccessLocalResponse(it)
+        } else {
+            screenState.value = PlacesScreenState.ErrorLoadingFromLocal(Exception("empty result"))
+        }
     }
 
     private fun handleErrorLoadingFromLocal(it: Throwable) {
@@ -72,7 +74,7 @@ class PlacesViewModel @Inject constructor(
 
     private fun handleErrorLoadingFromRemote(it: Throwable) {
         getCashedPlaces()
-        screenState.value =PlacesScreenState.ErrorLoadingFromApi(it)
+        screenState.value = PlacesScreenState.ErrorLoadingFromApi(it)
     }
 
     private fun handleSuccess(it: List<PlacesUiModel>) {
